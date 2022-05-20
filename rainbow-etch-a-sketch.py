@@ -22,35 +22,36 @@ def hex(inp):
     return hexdigits[b[-8] + b[-7] + b[-6] + b[-5]] + hexdigits[b[-4] + b[-3] + b[-2] + b[-1]]
 
 def changeColour():
-        global player
-        global h, c
-        
-        if (c < 256):
-                player.pencolor("#FF" + hex(h) + "00")
-                h+=1
-        elif (c >= 256 and c < 512):
-                player.pencolor("#" + hex(h) + "FF00")
-                h-=1
-        elif (c >= 512 and c < 768):
-                if (c==512):
-                        h = 0
-                player.pencolor("#00FF" + hex(h))
-                h+=1
-        elif (c >= 768 and c < 1024):
-                player.pencolor("#00" + hex(h) + "FF")
-                h-=1
-        elif (c >= 1024 and c < 1280):
-                if (c==1024):
-                        h = 0
-                player.pencolor("#" + hex(h) + "00FF")
-                h+=1
-        elif (c >= 1280 and c < 1536):
-                player.pencolor("#FF00" + hex(h))
-                h-=1
-
-        c+=1
+    global player
+    global h, c
+    
+    if (c < 256):
+        player.pencolor("#FF" + hex(h) + "00")
+        h+=1
+    elif (c >= 256 and c < 512):
+        player.pencolor("#" + hex(h) + "FF00")
+        h-=1
+    elif (c >= 512 and c < 768):
+        if (c==512):
+            h = 0
+        player.pencolor("#00FF" + hex(h))
+        h+=1
+    elif (c >= 768 and c < 1024):
+        player.pencolor("#00" + hex(h) + "FF")
+        h-=1
+    elif (c >= 1024 and c < 1280):
+        if (c==1024):
+            h = 0
+        player.pencolor("#" + hex(h) + "00FF")
+        h+=1
+    elif (c >= 1280 and c < 1536):
+        player.pencolor("#FF00" + hex(h))
+        h-=1
         if (c==1536):
-                c=0
+            c=-1
+            h = 0
+            
+    c+=1
 
 def move():
     screen.onkeypress(None, "w")  # disable handler in handler
@@ -77,7 +78,14 @@ def right():
 
 def undo():
     screen.onkeypress(None, "s")  # disable handler in handler
+    global c, h
+    global up
     player.undo()
+    if c < 256 or (c >= 512 and c < 768) or (c >= 1024 and c < 1280):
+        h-=2
+    else:
+        h+=2
+    c-=2
     screen.onkeypress(undo, "s")  # reenable handler
         
 screen.listen()
