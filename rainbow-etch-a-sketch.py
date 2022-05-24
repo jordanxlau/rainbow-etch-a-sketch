@@ -12,6 +12,7 @@ player.hideturtle()
 #Other global variables
 c = 0 #counter that counts number of colour changes
 h = 0 #keeps track of the hex digit we want
+#dictionary with all hexadecimal digits, their keys are the corresponding 4-digit binary value
 hexdigits = {'0000':'0','0001':'1','0010':'2','0011':'3','0100':'4','0101':'5','0110':'6','0111':'7','1000':'8','1001':'9','1010':'A','1011':'B','1100':'C','1101':'D','1110':'E','1111':'F'}
 
 def hex(inp):
@@ -48,18 +49,20 @@ def changeColour():
                 player.pencolor("#FF00" + hex(h))
                 h-=1
 
+        #increment the counter each time
         c+=1
-        if (c==1536):
+        if (c==1536):#Go back to starting colour
                 c=0
 
-def move():
+#TURTLE MOVEMENT FUNCTIONS
+def move():#moves forward
     screen.onkeypress(None, "w")  # disable handler in handler
     changeColour()
     changeColour()
     player.forward(10)
     screen.onkeypress(move, "w")  # reenable handler
     
-def left():
+def left():#turns left and moves forward
     screen.onkeypress(None, "a")  # disable handler in handler
     changeColour()
     changeColour()
@@ -67,7 +70,7 @@ def left():
     player.left(10)
     screen.onkeypress(left, "a")  # reenable handler
     
-def right():
+def right():#turns right and moves forward
     screen.onkeypress(None, "d")  # disable handler in handler
     changeColour()
     changeColour()
@@ -75,16 +78,23 @@ def right():
     player.right(10)
     screen.onkeypress(right, "d")  # reenable handler
 
-def undo():
+def undo(): #moves backwards, erasing the colour trail
     screen.onkeypress(None, "s")  # disable handler in handler
     player.undo()
     screen.onkeypress(undo, "s")  # reenable handler
-        
+
+def clear():#clears the turtle window
+    screen.onkeypress(None, "c")  # disable handler in handler
+    player.clear()
+    screen.onkeypress(clear, "c")  # reenable handler
+
+#main
 screen.listen()
 
 move()
 left()
 right()
 undo()
+clear()
 
 screen.mainloop()
